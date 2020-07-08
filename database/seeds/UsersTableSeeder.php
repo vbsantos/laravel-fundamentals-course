@@ -11,7 +11,7 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
-        $usersCount = (int) $this->command->ask("How many Users (besides Administrator, if he doesn't exist) would you like to add?", 10);
+        $usersCount = (int) $this->command->ask("How many Users (besides Administrator, if he doesn't already exists) would you like to add?", 10);
         try {
             factory(App\User::class)->states('admin')->create();
             factory(App\User::class, $usersCount)->create();
