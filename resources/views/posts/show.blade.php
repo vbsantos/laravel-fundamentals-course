@@ -23,12 +23,13 @@
         <p><pre style="white-space: pre-wrap;">{{ $post->content }}</pre></p>
     </article>
 
-    <h3>Comments</h3>
+    <h2>Comments</h2>
 
     @forelse ($post->comments as $comment)
 
         <p>
             {{ $comment->content }}
+            <br />
             <small class="text-muted">
                 ({{ $comment->created_at->diffForHumans() }})
             </small>

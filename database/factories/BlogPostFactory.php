@@ -7,8 +7,8 @@ use Faker\Generator as Faker;
 
 $factory->define(BlogPost::class, function (Faker $faker) {
     return [
-        'title' => $faker->sentence(10),
-        'content' => $faker->paragraphs(10, true)
+        'title' => $faker->sentence(5),
+        'content' => $faker->paragraphs(15, true)
     ];
 });
 
