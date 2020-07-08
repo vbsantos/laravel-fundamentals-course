@@ -33,6 +33,11 @@ class DatabaseSeeder extends Seeder
         //     $comment->save();
         // });
 
+        if ($this->command->confirm('Do you want to refresh the database?', true)) {
+            $this->command->call('migrate:refresh');
+            $this->command->info('database was refreshed');
+        }
+
         $this->call([
             UsersTableSeeder::class,
             BlogPostsTableSeeder::class,
