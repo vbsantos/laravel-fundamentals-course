@@ -6,10 +6,12 @@ use App\BlogPost;
 use Faker\Generator as Faker;
 
 $factory->define(BlogPost::class, function (Faker $faker) {
+    $created = $faker->dateTimeBetween('- 3 months');
     return [
         'title' => $faker->sentence(5),
         'content' => $faker->paragraphs(15, true),
-        'created_at' => $faker->dateTimeBetween('- 3 months'),
+        'created_at' => $created,
+        'updated_at' => $created,
     ];
 });
 

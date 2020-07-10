@@ -8,24 +8,31 @@
 
             @forelse ($posts as $post)
 
-                <p>
+                <p class="mt-4 mb-4">
                     <h3>
-                        @if ($post->trashed())
-                            <small class="text-muted">
-                                [deleted]
-                            </small>
-                            <del>
-                                <a href="{{ route('posts.show', ['post' => $post->id]) }}">{{ $post->title }}</a>
-                            </del>
-                        @else
-                                <a href="{{ route('posts.show', ['post' => $post->id]) }}">{{ $post->title }}</a>
-                        @endif
+                        <a href="{{ route('posts.show', ['post' => $post->id]) }}">{{ $post->title }}</a>
                     </h3>
+
+                    @component('components.badge',['type' => 'danger', 'show' => $post->trashed()])
+                        REMOVED
+                    @endComponent
+
+                    {{-- @component('components.badge',['type' => 'secondary']) --}}
+                    <small class="text-muted">
+                        @component('components.updated', ['date' => $post->created_at->diffForHumans(), 'name' => $post->user->name])
+                            Added
+                        @endComponent
+                    </small>
+                    {{-- @endComponent --}}
+
                     <p>
-                        <small class="text-muted">Added {{ $post->created_at->diffForHumans() }} by {{ $post->user->name }}</small>
-
-                        <br/>
-
+                        {{-- <small class="text-muted">Added {{ $post->created_at->diffForHumans() }} by {{ $post->user->name }}</small> --}}
+                        {{-- <small class="text-muted">
+                            @component('components.updated', ['date' => $post->created_at->diffForHumans(), 'name' => $post->user->name])
+                                Added
+                            @endComponent
+                        </small> --}}
+                        {{-- <br /> --}}
                         @if ($post->comments_count)
                             <small class="text-muted">{{ $post->comments_count }} comments</small>
                         @else
@@ -66,14 +73,10 @@
             <div class="container">
 
                 <div class="row">
-                    <div class="card" style="min-width: 270px; width: 270px;">
-                        <div class="card-body">
-                            <h5 class="card-title">Most Commented Posts</h5>
-                            <small class="text-muted">
-                                What users are currenty talking about
-                            </small>
-                        </div>
-                        <ul class="list-group list-group-flush">
+                    @component('components.card')
+                        @slot('title', 'Most Commented Posts')
+                        @slot('subtitle', 'What users are currenty talking about')
+                        @slot('items')
                             @forelse ($mostCommented as $post)
                                 <li class="list-group-item">
                                     <a href="{{ route('posts.show', ['post' => $post->id]) }}">
@@ -89,19 +92,15 @@
                                     <small>No blog posts yet... :(</small>
                                 </li>
                             @endforelse
-                        </ul>
-                    </div>
+                        @endslot
+                    @endcomponent
                 </div>
 
                 <div class="row">
-                    <div class="card mt-4" style="min-width: 270px; width: 270px;">
-                        <div class="card-body">
-                            <h5 class="card-title">Most Active Users</h5>
-                            <small class="text-muted">
-                                Users with most posts written
-                            </small>
-                        </div>
-                        <ul class="list-group list-group-flush">
+                    @component('components.card')
+                        @slot('title', 'Most Active Users')
+                        @slot('subtitle', 'Users with most posts written')
+                        @slot('items')
                             @forelse ($mostActive as $user)
                                 <li class="list-group-item">
                                     {{ $user->name }}
@@ -114,19 +113,15 @@
                                     <small>No users yet... :(</small>
                                 </li>
                             @endforelse
-                        </ul>
-                    </div>
+                        @endslot
+                    @endcomponent
                 </div>
 
                 <div class="row">
-                    <div class="card mt-4" style="min-width: 270px; width: 270px;">
-                        <div class="card-body">
-                            <h5 class="card-title">Most Active Users Last Month</h5>
-                            <small class="text-muted">
-                                Users with most posts written in the last month
-                            </small>
-                        </div>
-                        <ul class="list-group list-group-flush">
+                    @component('components.card')
+                        @slot('title', 'Most Active Users Last Month')
+                        @slot('subtitle', 'Users with most posts written in the last month')
+                        @slot('items')
                             @forelse ($mostActiveLastMonth as $user)
                                 <li class="list-group-item">
                                     {{ $user->name }}
@@ -139,8 +134,8 @@
                                     <small>No users yet... :(</small>
                                 </li>
                             @endforelse
-                        </ul>
-                    </div>
+                        @endslot
+                    @endcomponent
                 </div>
 
             </div>
