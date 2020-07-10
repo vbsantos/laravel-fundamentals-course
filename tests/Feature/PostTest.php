@@ -12,6 +12,13 @@ class PostTest extends TestCase
 {
     use RefreshDatabase;
 
+    private function createDummyBlogPost($userId = null): BlogPost
+    {
+        return factory(BlogPost::class)->create([
+            'user_id' => $userId ?? $this->user()->id,
+        ]);
+    }
+
     public function testNoBlogPostsWhenNothingInDatabase()
     {
         $response = $this->get('/posts');
@@ -22,16 +29,15 @@ class PostTest extends TestCase
     public function testSeeOneBlogPostWhenThereIsOneWithNoComments()
     {
         // Arrange
-        $post = factory(BlogPost::class)->create();
+        $post = $this->createDummyBlogPost();
 
         // Act
         $response = $this->get('/posts');
 
         // Assert
-        $response->assertSee($post->title);
-        $response->assertSee("No comments yet :(");
-        $response->assertSee("Edit");
-        $response->assertSee("Delete");
+        $response
+            ->assertSee($post->title)
+            ->assertSee("No comments yet :(");
 
         $this->assertDatabaseHas('blog_posts', [
             'title' => $post->title
@@ -42,7 +48,7 @@ class PostTest extends TestCase
     {
         // Arrange
         $numberOfComments = 3;
-        $post = factory(BlogPost::class)->create();
+        $post = $this->createDummyBlogPost();
         factory(Comment::class, $numberOfComments)->create([
             'blog_post_id' => $post->id
         ]);
@@ -51,10 +57,9 @@ class PostTest extends TestCase
         $response = $this->get('/posts');
 
         // Assert
-        $response->assertSee($post->title);
-        $response->assertSee($numberOfComments . " comments");
-        $response->assertSee("Edit");
-        $response->assertSee("Delete");
+        $response
+            ->assertSee($post->title)
+            ->assertSee($numberOfComments . " comments");
 
         $this->assertDatabaseHas('blog_posts', [
             'title' => $post->title
@@ -101,7 +106,8 @@ class PostTest extends TestCase
     public function testUpdateValid()
     {
         // Arrange
-        $post = factory(BlogPost::class)->create();
+        $user = $this->user();
+        $post = $this->createDummyBlogPost($user->id);
         $this->assertDatabaseHas('blog_posts', [
             'title' => $post->title,
             'content' => $post->content
@@ -112,7 +118,7 @@ class PostTest extends TestCase
             'content' => 'conteudo do post testeeeee'
         ];
 
-        $this->actingAs($this->user())
+        $this->actingAs($user)
             ->put("/posts/{$post->id}", $params)
             ->assertStatus(302)
             ->assertSessionHas('status', 'Blog post was updated!');
@@ -129,14 +135,15 @@ class PostTest extends TestCase
 
     public function testDeleteValid()
     {
-        $post = factory(BlogPost::class)->create();
+        $user = $this->user();
+        $post = $this->createDummyBlogPost($user->id);
 
         $this->assertDatabaseHas('blog_posts', [
             'title' => $post->title,
             'content' => $post->content
         ]);
 
-        $this->actingAs($this->user())
+        $this->actingAs($user)
             ->delete("/posts/{$post->id}",)
             ->assertStatus(302)
             ->assertSessionHas('status', 'Blog post was deleted!');

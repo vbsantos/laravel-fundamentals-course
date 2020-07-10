@@ -22,6 +22,10 @@ Route::get('/contact', 'HomeController@contact')
     ->name('contact');
 // ->middleware('auth')
 
+Route::get('/secret', 'HomeController@secret')
+    ->name('secret')
+    ->middleware('can:home.secret');
+
 Route::resource('posts', 'PostController');
 
 Auth::routes();

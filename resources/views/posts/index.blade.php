@@ -9,31 +9,33 @@
                 <a href="{{ route('posts.show', ['post' => $post->id]) }}">{{ $post->title }}</a>
             </h3>
 
-            @if ($post->comments_count)
+            <p>
+                <small class="text-muted">Added {{ $post->created_at->diffForHumans() }} by {{ $post->user->name }}</small>
 
-                <p>
+                <br/>
+
+                @if ($post->comments_count)
                     <small class="text-muted">{{ $post->comments_count }} comments!</small>
-                </p>
-
-            @else
-
-                <p>
+                @else
                     <small class="text-muted">No comments yet :(</small>
-                </p>
+                @endif
+            </p>
 
-            @endif
+            @can('update', $post)
+                <a class="btn btn-sm btn-outline-primary" href="{{ route('posts.edit', ['post' => $post->id]) }}">Edit</a>
+            @endcan
 
-            <a class="btn btn-primary" href="{{ route('posts.edit', ['post' => $post->id]) }}">Edit</a>
-
-            <form class="fm-inline" method="POST" action="{{ route('posts.destroy', ['post' => $post->id]) }}">
-                @csrf
-                @method('DELETE')
-                <input
-                    class="btn btn-primary"
-                    type="submit"
-                    value="Delete"
-                />
-            </form>
+            @can('delete', $post)
+                <form class="fm-inline" method="POST" action="{{ route('posts.destroy', ['post' => $post->id]) }}">
+                    @csrf
+                    @method('DELETE')
+                    <input
+                        class="btn btn-sm btn-outline-danger"
+                        type="submit"
+                        value="Delete"
+                    />
+                </form>
+            @endcan
         </p>
 
     @empty
