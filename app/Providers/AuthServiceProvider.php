@@ -30,11 +30,11 @@ class AuthServiceProvider extends ServiceProvider
             return $user->is_admin;
         });
 
-        // Gate::before(function ($user, $ability) {
-        //     if ($user->is_admin && in_array($ability, ['delete'])) {
-        //         return true;
-        //     }
-        // });
+        Gate::before(function ($user, $ability) {
+            if ($user->is_admin && in_array($ability, ['delete'])) {
+                return true;
+            }
+        });
 
         // Gate::resource('post', 'App\Policies\BlogPostPolicy');
 

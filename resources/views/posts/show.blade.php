@@ -6,14 +6,14 @@
 
         <p>
             <small>
-                <strong>New Post!</strong>
+                <strong>New Post</strong> by {{ $post->user->name }}
             </small>
         </p>
 
     @else
 
         <p>
-            <small class="text-muted">Added {{ $post->created_at->diffForHumans() }}</small>
+            <small class="text-muted">Added {{ $post->created_at->diffForHumans() }} by {{ $post->user->name }}</small>
         </p>
 
     @endif
@@ -28,8 +28,16 @@
     @forelse ($post->comments as $comment)
 
         <p>
+            @if ($comment->trashed())
+                <small class="text-muted">
+                    [deleted]
+                </small>
+                <br />
+            @endif
+
             {{ $comment->content }}
             <br />
+
             <small class="text-muted">
                 ({{ $comment->created_at->diffForHumans() }})
             </small>
