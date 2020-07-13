@@ -40,23 +40,25 @@
                         @endif
                     </p>
 
-                    @can('update', $post)
-                        <a class="btn btn-sm btn-outline-primary" href="{{ route('posts.edit', ['post' => $post->id]) }}">Edit</a>
-                    @endcan
-
-                    @if (!$post->trashed())
-                        @can('delete', $post)
-                            <form class="fm-inline" method="POST" action="{{ route('posts.destroy', ['post' => $post->id]) }}">
-                                @csrf
-                                @method('DELETE')
-                                <input
-                                    class="btn btn-sm btn-outline-danger"
-                                    type="submit"
-                                    value="Delete"
-                                />
-                            </form>
+                    @auth
+                        @can('update', $post)
+                            <a class="btn btn-sm btn-outline-primary" href="{{ route('posts.edit', ['post' => $post->id]) }}">Edit</a>
                         @endcan
-                    @endif
+
+                        @if (!$post->trashed())
+                            @can('delete', $post)
+                                <form class="fm-inline" method="POST" action="{{ route('posts.destroy', ['post' => $post->id]) }}">
+                                    @csrf
+                                    @method('DELETE')
+                                    <input
+                                        class="btn btn-sm btn-outline-danger"
+                                        type="submit"
+                                        value="Delete"
+                                    />
+                                </form>
+                            @endcan
+                        @endif
+                    @endauth
                 </p>
 
             @empty
@@ -82,8 +84,8 @@
                                     <a href="{{ route('posts.show', ['post' => $post->id]) }}">
                                         {{ $post->title }}
                                     </a>
-                                    <br/>
-                                    <small class="text-muted">{{ $post->user->name }} ({{ $post->created_at->diffForHumans() }})</small>
+                                    {{-- <br/>
+                                    <small class="text-muted">{{ $post->user->name }} ({{ $post->created_at->diffForHumans() }})</small> --}}
                                     <br />
                                     <small class="text-muted">{{ $post->comments_count }} {{ $post->comments_count == 1 ? "comment" : "comments" }}</small>
                                 </li>

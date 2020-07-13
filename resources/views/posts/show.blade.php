@@ -32,6 +32,12 @@
         @endComponent
     @endcomponent
 
+    <br/>
+
+    @component('components.badge', ['type' => 'info'])
+        Currently being read by {{ $counter }} {{ $counter == 1 ? 'person' : 'people' }}
+    @endcomponent
+
     <article>
         <h1>{{ $post->title }}</h1>
         <p><pre style="white-space: pre-wrap;">{{ $post->content }}</pre></p>
