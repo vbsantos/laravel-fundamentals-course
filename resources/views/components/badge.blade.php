@@ -1,5 +1,9 @@
 @if (!isset($show) || $show)
-    <span class="badge badge-pill badge-{{ $type ?? 'success' }}">
+
+    <span style="font-size:0.8rem;" class="mt-1 badge badge-{{ $type ?? 'success' }}">
+
         {{ $slot }}
+
     </span>
+
 @endif

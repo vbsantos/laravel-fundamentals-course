@@ -1,6 +1,11 @@
 <span>
-    {{ $slot }} {{ $date ?? '' }}
+
+    {{ $slot }} {{ $date ?? "" }}
+
     @if (isset($name))
+
         by {{ $name }}
+
     @endif
+
 </span>
