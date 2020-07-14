@@ -18,7 +18,7 @@
                     @endComponent
 
 
-                    @component('components.badge',['type' => 'primary'])
+                    @component('components.badge',['type' => 'secondary'])
                     {{-- <small class="text-muted"> --}}
                         @component('components.updated', ['date' => $post->created_at->diffForHumans(), 'name' => $post->user->name])
                             Added

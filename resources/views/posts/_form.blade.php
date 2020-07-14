@@ -1,10 +1,13 @@
+
+@component('components.errors') @endcomponent
+
 <div class="form-group">
 
     <label>
         Title
-        @if ($errors->has('title'))
+        {{-- @if ($errors->has('title'))
             <p style="color: red">{{ $errors->first('title') }}</p>
-        @endif
+        @endif --}}
     </label>
 
     <input
@@ -20,26 +23,16 @@
 
     <label>
         Content
-        @if ($errors->has('content'))
+        {{-- @if ($errors->has('content'))
                 <p style="color: red">{{ $errors->first('content') }}</p>
-        @endif
+        @endif --}}
     </label>
 
     <textarea
-        style="height:300px"
+        style="height:400px"
         class="form-control"
         type="text"
         name="content"
     >{{ old('content', $post->content ?? null) }}</textarea>
 
 </div>
-
-{{-- @if ($errors->any())
-    <div style="color: red">
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-@endif --}}

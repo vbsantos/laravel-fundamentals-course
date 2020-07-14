@@ -53,7 +53,13 @@
             <pre style="font-family: sans-serif;white-space: pre-wrap;">{{ $post->content }}</pre>
         </article>
 
+        <hr />
+
         <h2>Comments</h2>
+
+        @include('comments._form')
+
+        <hr />
 
         @forelse ($post->comments as $comment)
 
@@ -63,7 +69,7 @@
                 @endcomponent
 
                 @component('components.badge', ['type' => 'secondary'])
-                    @component('components.updated', ['date' => $comment->created_at->diffForHumans()])
+                    @component('components.updated', ['date' => $comment->created_at->diffForHumans(), 'name' => $comment->user->name])
                         Added
                     @endComponent
                 @endcomponent

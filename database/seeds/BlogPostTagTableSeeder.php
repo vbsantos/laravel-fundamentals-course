@@ -20,7 +20,7 @@ class BlogPostTagTableSeeder extends Seeder
             return;
         }
 
-        $howManyMin = (int) $this->command->ask('Minimum tags on blog post:', 0);
+        $howManyMin = min((int) $this->command->ask('Minimum tags on blog post:', 1), $tagCount);
         $howManyMax = min((int) $this->command->ask('Maximum tags on blog post:', $tagCount), $tagCount);
 
         BlogPost::all()->each(function (BlogPost $post) use ($howManyMin, $howManyMax) {

@@ -12,7 +12,7 @@ class TagsTableSeeder extends Seeder
      */
     public function run()
     {
-        $tags = collect(['Science', 'Sports', 'Politics', 'Tech', 'Economy']);
+        $tags = collect(['Vue.js', 'React.js', 'React Native', 'Adonis.js', 'Laravel', 'HTML', 'CSS', 'JavaScript', 'PHP']);
 
         $tags->each(function ($tagName) {
             $tag = new Tag();

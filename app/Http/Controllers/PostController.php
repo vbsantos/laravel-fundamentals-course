@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\BlogPost;
-use App\User;
 use App\Http\Requests\StorePost;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
@@ -50,11 +49,7 @@ class PostController extends Controller
         // });
 
         return view('posts.index', [
-            'posts' => BlogPost::latest()
-                ->withCount('comments')
-                ->with('user')
-                ->with('tags')
-                ->get(), // TODO paginate
+            'posts' => BlogPost::latestWithRelations()->get(), // TODO paginate
             // 'mostCommented' => $mostCommented,
             // 'mostActive' => $mostActive,
             // 'mostActiveLastMonth' => $mostActiveLastMonth,
@@ -111,7 +106,8 @@ class PostController extends Controller
         // ]);
 
         $blogPost = Cache::tags(['blog-post'])->remember("blog-post-{$id}", 60, function () use ($id) {
-            return BlogPost::with('comments')->with('tags')->findOrfail($id);
+            return BlogPost::with('comments', 'tags', 'user', 'comments.user') //comments.user nested relation: relations of the relation
+                ->findOrfail($id);
         });
 
         $sessionId = session()->getId();
