@@ -1,14 +1,8 @@
-
 @component('components.errors') @endcomponent
 
 <div class="form-group">
 
-    <label>
-        Title
-        {{-- @if ($errors->has('title'))
-            <p style="color: red">{{ $errors->first('title') }}</p>
-        @endif --}}
-    </label>
+    <label>Title</label>
 
     <input
         class="form-control"
@@ -21,12 +15,19 @@
 
 <div class="form-group">
 
-    <label>
-        Content
-        {{-- @if ($errors->has('content'))
-                <p style="color: red">{{ $errors->first('content') }}</p>
-        @endif --}}
-    </label>
+    <label>Thumbnail</label>
+
+    <input
+        type="file"
+        name="thumbnail"
+        class="form-control-file"
+    />
+
+</div>
+
+<div class="form-group">
+
+    <label>Content</label>
 
     <textarea
         style="height:400px"

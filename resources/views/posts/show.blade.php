@@ -15,7 +15,7 @@
             @component('components.badge', ['type' => 'success'])
                 {{-- New Post by {{ $post->user->name }} --}}
                 @component('components.updated', ['name' => $post->user->name])
-                    New Post
+                    Brand new Post
                 @endComponent
             @endcomponent
 
@@ -49,7 +49,28 @@
         @endComponent
 
         <article>
-            <h1>{{ $post->title }}</h1>
+            @if($post->image)
+
+                <div class="mt-4 mb-4" style="
+                    background-image: url('{{ $post->image->url() }}');
+                    background-repeat: no-repeat;
+                    background-size: 100%;
+                    min-height: 210px;
+                    color: white;
+                    text-align: center;
+                    background-attachment: fixed;
+                ">
+                    <h1 style="
+                        padding-top: 15%;
+                        text-shadow: 1px 2px #000;
+                    ">
+                        {{ $post->title }}
+                    </h1>
+                </div>
+
+            @else
+                <h1>{{ $post->title }}</h1>
+            @endif
             <pre style="font-family: sans-serif;white-space: pre-wrap;">{{ $post->content }}</pre>
         </article>
 

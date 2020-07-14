@@ -45,9 +45,9 @@
 
     <div class="container">
         @if (session()->has('status'))
-            <p style="color: green">
+            <div class="alert alert-primary" role="alert">
                 {{ session()->get('status') }}
-            </p>
+            </div>
         @endif
         @yield('content')
     </div>

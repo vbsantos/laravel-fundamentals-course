@@ -1,4 +1,4 @@
-<div class="card mb-4" style="min-width: 270px; width: 270px;">
+<div class="card mb-4" style="min-width: 270px; width: 100%;">
     <div class="card-body">
         <h5 class="card-title">{{ $title }}</h5>
         <small class="text-muted">

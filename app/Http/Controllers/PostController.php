@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\BlogPost;
 use App\Http\Requests\StorePost;
+use App\Image;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
@@ -80,11 +82,19 @@ class PostController extends Controller
         $validatedInputs = $request->validated();
         $validatedInputs['user_id'] = $request->user()->id;
 
-        $post = BlogPost::create($validatedInputs);
+        $blogPost = BlogPost::create($validatedInputs);
+
+        if ($request->hasFile('thumbnail')) {
+            $path = $request->file('thumbnail')->store('thumbnails');
+
+            $blogPost->image()->save(
+                Image::create(['path' => $path])
+            );
+        }
 
         $request->session()->flash('status', 'Blog post was created!');
 
-        return redirect()->route('posts.show', ['post' => $post->id]);
+        return redirect()->route('posts.show', ['post' => $blogPost->id]);
     }
 
     /**
@@ -94,7 +104,7 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request, $id)
+    public function show($id)
     {
         // dd(BlogPost::find($id));
         // $request->session()->reflash();
@@ -178,18 +188,31 @@ class PostController extends Controller
      */
     public function update(StorePost $request, $id)
     {
-        $post = BlogPost::findOrFail($id);
+        $blogPost = BlogPost::findOrFail($id);
 
-        $this->authorize($post);
+        $this->authorize($blogPost);
 
         $validatedInputs = $request->validated();
 
-        $post->fill($validatedInputs);
-        $post->save();
+        $blogPost->fill($validatedInputs);
 
+        if ($request->hasFile('thumbnail')) {
+            $path = $request->file('thumbnail')->store('thumbnails');
+            if ($blogPost->image) {
+                Storage::delete($blogPost->image->path);
+                $blogPost->image->path = $path;
+                $blogPost->image->save();
+            } else {
+                $blogPost->image()->save(
+                    Image::create(['path' => $path])
+                );
+            }
+        }
+
+        $blogPost->save();
         $request->session()->flash('status', 'Blog post was updated!');
 
-        return redirect()->route('posts.show', ['post' => $post->id]);
+        return redirect()->route('posts.show', ['post' => $blogPost->id]);
     }
 
     /**

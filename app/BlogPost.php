@@ -18,7 +18,9 @@ class BlogPost extends Model
 
     public function comments()
     {
-        return $this->hasMany('App\Comment')->latest();
+        return $this
+            ->hasMany('App\Comment')
+            ->latest();
     }
 
     public function user()
@@ -31,6 +33,11 @@ class BlogPost extends Model
         return $this
             ->belongsToMany('App\Tag')
             ->withTimestamps();
+    }
+
+    public function image()
+    {
+        return $this->hasOne('App\Image');
     }
 
     public function scopeLatest(Builder $query)
